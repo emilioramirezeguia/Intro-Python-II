@@ -34,6 +34,8 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# Add items to rooms
+
 #
 # Main
 #
@@ -51,12 +53,19 @@ player = Player("Emilio", room["outside"])
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-selection = ""
-while selection != "q":
-    print("You're in the", player.current_room.name)
+playing = True
+while playing == True:
+    print("")
+    print("You're in this room: ", player.current_room.name)
+    print("")
     print(player.current_room.description)
-    selection = input("Where do you want to go next?")
+    print("------------------------------")
+    selection = input("Where do you want to go next? \t")
     if selection == "n" or selection == "s" or selection == "e" or selection == "w":
-        player.current_room = room["outside"].n_to
+        player.move_to(selection)
+    elif selection == "q":
+        playing = False
+        print("Thank you for playing.")
     else:
+        print("")
         print("Sorry, that's not a viable direction. Try again")
