@@ -10,7 +10,7 @@ class Player:
             self.items = items
 
     def __str__(self):
-        return f"Name: {self.name}, Current Room: {self.current_room}"
+        return f"{self.name}, you're currently in... {self.current_room.name}"
 
     def __repr__(self):
         return f"Player({self.name}, {self.current_room})"
@@ -46,7 +46,18 @@ class Player:
                 print("Oops, there's no room there.")
 
     # If player in Room, if he picks up item, remove item from that ROOM and add it to player's items list.
+    def add_item(self, item):
+        self.items.append(item)
 
-# emilio = Player("Emilio Ramirez", "Sala")
-# print(emilio)
-# print(repr(emilio))
+    def remove_item(self, item):
+        self.items.remove(item)
+
+    def print_items(self):
+        if len(self.items):
+            for item in self.items:
+                print("")
+                print("Player currently have these items:")
+                print('-->', item.name)
+        else:
+            print("")
+            print("Player doesn't have any items right now.")

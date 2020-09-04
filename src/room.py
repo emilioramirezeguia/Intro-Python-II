@@ -1,6 +1,7 @@
 # Implement a class to hold room information. This should have name and
 # description attributes.
 
+
 class Room:
     def __init__(self, name, description, items=None):
         self.name = name
@@ -9,7 +10,6 @@ class Room:
         self.s_to = None
         self.e_to = None
         self.w_to = None
-        # Room should have some items to start with.
         if items == None:
             self.items = []
         else:
@@ -21,7 +21,18 @@ class Room:
     def __repr__(self):
         return f"Room({self.name}, {self.description})"
 
+    def add_item(self, item):
+        self.items.append(item)
 
-# room = Room("Levofit", "Sala para hacer crossfit")
-# print(room)
-# print(repr(room))
+    def remove_item(self, item):
+        self.items.remove(item)
+
+    def print_items(self):
+        if len(self.items):
+            for item in self.items:
+                print("")
+                print("Room has these items:")
+                print('-->', item.name)
+        else:
+            print("")
+            print("Room doesn't have any items right now.")

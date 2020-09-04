@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -34,14 +35,21 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-# Add items to rooms
-
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
 player = Player("Emilio", room["outside"])
+
+# Add items to rooms
+room['outside'].add_item(Item("Stick", "Wooden stick."))
+room['foyer'].add_item(Item("Rocks", "Not one, but two."))
+room['overlook'].add_item(
+    Item('Sword', "Shiny. Not like the lightsaber though."))
+room['narrow'].add_item(Item("Magic", ""))
+room['treasure'].add_item(
+    Item("Empty", "No gold. Good for storage maybe?"))
 
 # Write a loop that:
 #
@@ -56,16 +64,32 @@ player = Player("Emilio", room["outside"])
 playing = True
 while playing == True:
     print("")
-    print("You're in this room: ", player.current_room.name)
+    print(player)
     print("")
     print(player.current_room.description)
+    player.print_items()
+    player.current_room.print_items()
     print("------------------------------")
-    selection = input("Where do you want to go next? \t")
-    if selection == "n" or selection == "s" or selection == "e" or selection == "w":
-        player.move_to(selection)
-    elif selection == "q":
-        playing = False
-        print("Thank you for playing.")
-    else:
-        print("")
-        print("Sorry, that's not a viable direction. Try again")
+    selection = input("""
+    What do you want to do now?
+
+    Move somewhere: type 'n' (to go north), 's' (to go south), 'e' (to go east), or 'w' (to go west)
+
+    Grab item: type 'get' or 'take' followed by an item name.
+    """).lower().split(" ")
+
+    if len(selection) == 1:
+        if selection[0] == "n" or selection[0] == "s" or selection[0] == "e" or selection[0] == "w":
+            player.move_to(selection[0])
+        elif selection[0] == "q":
+            playing = False
+            print("Thank you for playing.")
+        else:
+            print("")
+            print("Sorry, that's not a viable direction. Try again")
+    elif len(selection) == 2:
+        if selection[0] == "get" or selection[0] == "take":
+            for item in player.current_room.items:
+                if item.name == selection[1].capitalize():
+                    player.add_item(item)
+                    player.current_room.remove_item(item)
